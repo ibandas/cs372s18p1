@@ -12,7 +12,7 @@ trait OutputToStdOut[Result] extends Output[Result] {
 
 /** Defines a dependency (plug-in contract) on a run method that processes an input stream. */
 trait Task {
-  def run(input: Iterator[String]): Unit
+  def run(input: Iterator[Int], windowSize: Array[Int]): Unit
 }
 
 /**
@@ -20,8 +20,11 @@ trait Task {
  * Depends on a suitable run method.
  */
 trait Main[Result] extends Task with OutputToStdOut[Result] {
-  def main(args: Array[String]): Unit = {
+  def main(args: Array[Int], windowSize: Array[Int]): Unit = {
     val lines = scala.io.Source.stdin.getLines
-    run(lines)
+    val windows = scala.io.Source.stdin.getLines
+    run(lines, windows)
   }
 }
+
+https://ibandas@bitbucket.org/psenkow/cs372s18p1.git
