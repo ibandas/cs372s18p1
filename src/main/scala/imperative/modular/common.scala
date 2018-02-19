@@ -26,5 +26,3 @@ trait Main[Result] extends Task with OutputToStdOut[Result] {
     run(lines, windows)
   }
 }
-
-https://ibandas@bitbucket.org/psenkow/cs372s18p1.git
