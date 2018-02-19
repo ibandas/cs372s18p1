@@ -15,17 +15,16 @@ trait AccumulateLength extends Task with Output[(Int, Int)] {
     var windowSizeMax = 0
     var windowSize = 0
 
-    for(window <- windowSizes){ //Loop to find the window with the largest size
-      if(window > windowSizeMax){
+    for (window <- windowSizes) { //Loop to find the window with the largest size
+      if (window > windowSizeMax) {
         windowSizeMax = window
-      }
-      else{
+      } else {
         println("")
       }
     }
 
     for (line <- input) { //Loops through each number stream
-      if(windowQueue.length == windowSizeMax){ //If the queue is at max length, dequeue so the new value will be enqueued
+      if (windowQueue.length == windowSizeMax) { //If the queue is at max length, dequeue so the new value will be enqueued
         windowQueue.dequeue()
       }
       if (input.hasNext) { //If there is another incoming input number from stream, increase counter
@@ -33,12 +32,11 @@ trait AccumulateLength extends Task with Output[(Int, Int)] {
       }
       windowQueue.enqueue(line)
       print(line + ", " + counter + ", ") //First two numbers are always the input number and counter
-      for(windowLine <- windowSizes) { //Uses the queue for each window to get stats
-        if(windowQueue.take(windowLine) == true){//If there is enough numbers in queue, do stats
+      for (windowLine <- windowSizes) { //Uses the queue for each window to get stats
+        if (windowQueue.take(windowLine) == true) { //If there is enough numbers in queue, do stats
           average = movingAverage(windowQueue, windowSize)
           print(windowQueue.min + ", " + average + ", " + windowQueue.max + ", ")
-        }
-        else {//If there is not enough numbers in queue, print question marks
+        } else { //If there is not enough numbers in queue, print question marks
           print("?, ?, ?")
         }
         println(" ")
@@ -48,11 +46,11 @@ trait AccumulateLength extends Task with Output[(Int, Int)] {
     }
   }
 
-  def movingAverage(inputQueue : Queue[Int], divisible : Int) : Int = {
+  def movingAverage(inputQueue: Queue[Int], divisible: Int): Int = {
     var sum = 0
     var avg = 0
     var windowArray = inputQueue.take(divisible)
-    for (value <- windowArray){
+    for (value <- windowArray) {
       sum = sum + value
     }
     avg = sum / divisible

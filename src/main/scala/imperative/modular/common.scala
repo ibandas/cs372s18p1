@@ -21,8 +21,11 @@ trait Task {
  */
 trait Main[Result] extends Task with OutputToStdOut[Result] {
   def main(args: Array[Int], windowSize: Array[Int]): Unit = {
-    val lines = scala.io.Source.stdin.getLines
-    val windows = scala.io.Source.stdin.getLines
-    run(lines, windows)
+    val lines = scala.io.Source.stdin.getLines().map(_.toInt)
+    val windows = scala.io.Source.stdin.getLines().map(_.toInt)
+    for (input <- windows) {
+      windowSize :+ input
+    }
+    run(lines, windowSize)
   }
 }
