@@ -21,7 +21,9 @@ trait Task {
  */
 trait Main[Result] extends Task with OutputToStdOut[Result] {
   def main(args: Array[String]): Unit = {
-    val lines = scala.io.Source.stdin.getLines().map(_.toInt)
-    run(lines, args.map(_.toInt))
+    val lines = scala.io.Source.stdin.getLines()
+    val words = lines.flatMap(_.split("\\W+")).map(_.toInt)
+
+    run(words, args.map(_.toInt))
   }
 }
