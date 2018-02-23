@@ -10,51 +10,38 @@ trait AccumulateLength extends Task with Output[(Int, Int)] {
 
   def run(input: Iterator[Int], windowSizes: Array[Int]) = {
     var counter = 0
-    var average = 0
     var windowQueue = Queue[Int]()
-    var windowSizeMax = 0
-    var windowSize = 0
-
-    for (window <- windowSizes) { //Loop to find the window with the largest size
-      if (window > windowSizeMax) {
-        windowSizeMax = window
-      } else {
-        println("")
-      }
-    }
+    val windowSizeMax = windowSizes.max
 
     for (line <- input) { //Loops through each number stream
-      if (windowQueue.length == windowSizeMax) { //If the queue is at max length, dequeue so the new value will be enqueued
+      windowQueue.enqueue(line)
+      if (windowQueue.length > windowSizeMax) { //If the queue is at max length, dequeue so the new value will be enqueued
         windowQueue.dequeue()
       }
-      if (input.hasNext) { //If there is another incoming input number from stream, increase counter
-        counter = counter + 1
-      }
-      windowQueue.enqueue(line)
+      counter = counter + 1
       print(line + ", " + counter + ", ") //First two numbers are always the input number and counter
-      for (windowLine <- windowSizes) { //Uses the queue for each window to get stats
-        if (windowQueue.take(windowLine) == true) { //If there is enough numbers in queue, do stats
-          average = movingAverage(windowQueue, windowSize)
-          print(windowQueue.min + ", " + average + ", " + windowQueue.max + ", ")
+      for (windowSize <- windowSizes) { //Uses the queue for each window to get stats
+        //If there is enough numbers in queue, do stats
+        if (windowQueue.length >= windowSize) {
+          val stats = movingAverage(windowQueue, windowSize)
+          print(stats._1 + ", " + stats._2 + ", " + stats._3 + ", ")
         } else { //If there is not enough numbers in queue, print question marks
-          print("?, ?, ?")
+          print("?, ?, ? | ")
         }
-        println(" ")
       }
+      println(" ")
       //length += line.length
       //doOutput((line, length))
     }
   }
 
-  def movingAverage(inputQueue: Queue[Int], divisible: Int): Int = {
-    var sum = 0
-    var avg = 0
-    var windowArray = inputQueue.take(divisible)
-    for (value <- windowArray) {
-      sum = sum + value
-    }
-    avg = sum / divisible
-    return avg
+  def movingAverage(inputQueue: Queue[Int], divisible: Int) = {
+    val windowArray = inputQueue.takeRight(divisible)
+    val sum = windowArray.sum
+    val min = windowArray.min
+    val max = windowArray.max
+    val avg = sum / divisible
+    (min, avg, max)
   }
 }
 
