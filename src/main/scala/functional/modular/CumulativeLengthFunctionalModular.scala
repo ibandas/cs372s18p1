@@ -51,8 +51,10 @@ object CumulativeLengthFunctionalModular extends Main[(String, Int)] {
   def accumulateCount(acc: (String, Int), line: String) = (line, acc._2 + line.length)
   //Make function like above with MovingAverage
 
+  def movingAverage(sum: (String, Int), count: Int, line: String) = (count, line, sum._2 + line.length)
+
   def run(lines: Iterator[String]): Iterator[(String, Int)] =
-    scanLeftAsIterator(lines)("dummy", 0)(accumulateCount).drop(1)
+    scanLeftAsIterator(lines)("dummy", 0)(movingAverage).drop(1)
 
   // the following fails when running interactively: delayed by one line
   // lines.scanLeft(("dummy", 0))(accumulateCount).drop(1)
