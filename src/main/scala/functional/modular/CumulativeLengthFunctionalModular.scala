@@ -1,9 +1,10 @@
 package functional.modular
 
 import scala.collection.AbstractIterator
+import scala.collection.immutable.Queue
 
 /** Reads lines and prints cumulative length of all lines so far along with most recent line itself. */
-object CumulativeLengthFunctionalModular extends Main[(String, Int)] {
+object CumulativeLengthFunctionalModular extends Main[(Int, Int)] {
 
   // def iterate[T](start: T)(f: (T) ⇒ T): Iterator[T]
   // def scanLeft[B](z: B)(op: (B, A) ⇒ B): Iterator[B]
@@ -48,13 +49,15 @@ object CumulativeLengthFunctionalModular extends Main[(String, Int)] {
         Iterator.empty.next()
   }
 
-  def accumulateCount(acc: (String, Int), line: String) = (line, acc._2 + line.length)
+  //def accumulateCount(acc: (String, Int), line: String) = (line, acc._2 + line.length)
   //Make function like above with MovingAverage
 
-  def movingAverage(sum: (String, Int), count: Int, line: String) = (count, line, sum._2 + line.length)
+  def movingAverage(sum: Int, count: Int, line: Int) = {
+    line
+  }
 
-  def run(lines: Iterator[String]): Iterator[(String, Int)] =
-    scanLeftAsIterator(lines)("dummy", 0)(movingAverage).drop(1)
+  def run(lines: Iterator[Int], windowSize: Array[Int]): Iterator[(Int)] =
+    scanLeftAsIterator(lines)(0)(movingAverage).drop(1)
 
   // the following fails when running interactively: delayed by one line
   // lines.scanLeft(("dummy", 0))(accumulateCount).drop(1)
