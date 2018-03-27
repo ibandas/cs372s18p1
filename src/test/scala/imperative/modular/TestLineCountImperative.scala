@@ -34,11 +34,11 @@ class TestLineCountImperative extends WordSpec {
     "given a nonempty iterator" should {
       "produce the correct nonempty output" in {
         // input data for this test case
-        val data = Seq(1, 2, 3, 4)
+        val data = Seq(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
         // create SUT instance for this test case
         val sut = createSUT()
         // exercise SUT
-        sut.run(data.iterator, Array(1))
+        sut.run(data.iterator, Array(1, 10))
         // check effect on output observer
         assert(sut.getResults === (1 to data.length).zip(data))
       }

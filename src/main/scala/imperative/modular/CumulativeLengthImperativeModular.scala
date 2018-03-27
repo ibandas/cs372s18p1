@@ -23,19 +23,20 @@ trait AccumulateLength extends Task with Output {
         }
         counter = counter + 1
         println(windowQueue)
-        //print(line + ", " + counter + ", ") //First two numbers are always the input number and counter
+        print(line + ", " + counter + ", ") //First two numbers are always the input number and counter
         val allStats = ListBuffer.empty[Option[(Double, Double, Double)]]
         for (windowSize <- windowSizes) { //Uses the queue for each window to get stats
           //If there is enough numbers in queue, do stats
           if (windowQueue.length >= windowSize) {
             val stats = movingAverage(windowQueue, windowSize)
-            //print(stats._1 + ", " + stats._2 + ", " + stats._3 + ", ")
+            print(stats._1 + ", " + stats._2 + ", " + stats._3 + ", ")
             allStats += Some(stats)
           } else { //If there is not enough numbers in queue, print question marks
+            print("?, ?, ?, ")
             allStats += None
           }
         }
-        //println(" ")
+        println(" ")
         val update = (line, counter, allStats)
         //length += line.length
         doOutput(update)

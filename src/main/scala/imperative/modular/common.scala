@@ -9,7 +9,15 @@ trait Output {
 
 /** Provides a reusable output observer tied to println/stdout. */
 trait OutputToStdOut extends Output {
-  override def doOutput(result: (Int, Int, ListBuffer[Option[(Double, Double, Double)]])) = println(result)
+  override def doOutput(result: (Int, Int, ListBuffer[Option[(Double, Double, Double)]])) = {
+
+    //println(result._3)
+    //println(result)
+    //print(result._1, result._2)
+    //result._3.flatten.foreach(print)
+    println("")
+    //println(result._1, result._2, result._3.take(3))
+  }
 }
 
 /** Defines a dependency (plug-in contract) on a run method that processes an input stream. */
